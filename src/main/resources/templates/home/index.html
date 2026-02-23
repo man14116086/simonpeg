@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root{
+        --bg: linear-gradient(135deg,#1f2a44,#3a4f7a);
+        --glass: rgba(255,255,255,0.08);
+        --text: #fff;
+        }
+
+        body.light{
+        --bg:#f4f6f9;
+        --glass:#ffffff;
+        --text:#222;
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+        body{
+        min-height:100vh;
+        background:var(--bg);
+        display:flex;
+        padding:20px;
+        color:var(--text);
+        transition:.4s;
+        }
+
+        .wrapper{
+        width:100%;
+        display:flex;
+        border-radius:25px;
+        overflow:hidden;
+        background:var(--glass);
+        backdrop-filter:blur(20px);
+        transition:.4s;
+        animation:fadeIn .6s ease;
+        }
+
+        @keyframes fadeIn{
+        from{opacity:0;transform:translateY(10px);}
+        to{opacity:1;transform:translateY(0);}
+        }
+
+        /* SIDEBAR */
+        .sidebar{
+        width:250px;
+        background:rgba(0,0,0,0.3);
+        padding:25px;
+        }
+
+        .sidebar h2{margin-bottom:30px;}
+        .sidebar a{
+        display:block;
+        padding:12px;
+        margin-bottom:10px;
+        border-radius:10px;
+        color:white;
+        text-decoration:none;
+        transition:.3s;
+        }
+        .sidebar a:hover{background:rgba(255,255,255,0.2);}
+
+        /* MAIN */
+        .main{flex:1;padding:30px;}
+
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        .cards{
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:20px;
+        margin-bottom:30px;
+        }
+
+        .card{
+        padding:25px;
+        border-radius:20px;
+        color:white;
+        }
+
+        .blue{background:linear-gradient(45deg,#3a7bd5,#00d2ff);}
+        .purple{background:linear-gradient(45deg,#8e2de2,#4a00e0);}
+        .green{background:linear-gradient(45deg,#11998e,#38ef7d);}
+        .orange{background:linear-gradient(45deg,#ff9966,#ff5e62);}
+
+        .card h3{font-size:36px;margin-bottom:5px;}
+
+        .content-grid{
+            display:grid;
+            grid-template-columns:2fr 1fr;
+            gap:20px;
+        }
+
+        .panel{
+            background:rgba(255,255,255,0.1);
+            padding:20px;
+            border-radius:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+        th,td{
+            padding:10px;
+            border-bottom:1px solid rgba(255,255,255,0.2);
+        }
+
+        @media(max-width:1024px){
+            .cards{grid-template-columns:1fr;}
+            .content-grid{grid-template-columns:1fr;}
+            .sidebar{display:none;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="sidebar">
+        <h2>Sistem Kepegawaian</h2>
+        <div class="menu">
+            <a href="@{/home}">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="@{/pegawai}">
+                <i class="fas fa-users"></i>
+                <span>Pegawai</span>
+            </a>
+            <a th:action="@{/logout}" method="post">
+                <i class="fas fa-power-off"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="topbar">
+            <h1>Dashboard</h1>
+        </div>
+
+        <div class="cards">
+            <div class="card blue">
+                <h3 th:text="${totalSeluruhPegawai}">150</h3>
+                <p>Total Seluruh Pegawai</p>
+            </div>
+            <div class="card purple">
+                <h3 th:text="${pegawaiKanwil}">61</h3>
+                <p>Pegawai Kanwil</p>
+            </div>
+            <div class="card blue">
+                <h3 th:text="${totalSatker}">14</h3>
+                <p>Unit Pelaksana Teknis (UPT)</p>
+            </div>
+            <div class="card purple">
+                <h3 th:text="${totalPegawaiUPT}">782</h3>
+                <p>Pegawai Unit Pelaksana Teknis (UPT)</p>
+            </div>
+            <div class="card green">
+                <h3>18</h3>
+                <p>Kenaikan Berkala</p>
+            </div>
+            <div class="card orange">
+                <h3>20</h3>
+                <p>Akan Naik Pangkat</p>
+            </div>
+            <div class="card green">
+                <h3>18</h3>
+                <p>Akan Pensiun</p>
+            </div>
+            <div class="card orange">
+                <h3>20</h3>
+                <p>Satya Lencana</p>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="panel">
+                <h3>Notifikasi Terbaru</h3>
+                <table>
+                    <tr><th>Nama</th><th>Jenis</th><th>Tanggal</th></tr>
+                    <tr><td>Budi Santoso</td><td>Pensiun</td><td>15-12-2025</td></tr>
+                </table>
+            </div>
+
+            <div class="panel">
+                <h3>Pegawai per Golongan</h3>
+                <canvas id="donut"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+     new Chart(document.getElementById("donut"),{
+        type:'doughnut',
+        data:{
+            labels:['I','II','III','IV'],
+            datasets:[{
+                data:[10,30,30,30],
+                backgroundColor:['#00d2ff','#8e2de2','#ff9966','#38ef7d']
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

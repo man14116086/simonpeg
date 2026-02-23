@@ -1,0 +1,293 @@
+/* =========================================================
+   Global Theme - Sistem Kepegawaian
+   ========================================================= */
+:root {
+    --navy-900: #0a2f66;
+    --navy-800: #10448f;
+    --navy-700: #1d5db4;
+    --soft-bg: #f3f6fb;
+    --card-bg: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --radius-lg: 12px;
+    --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* Base reset */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Poppins', sans-serif;
+    color: var(--text-main);
+    margin: 0;
+    background-color: var(--soft-bg);
+}
+
+/* =========================================================
+   Authentication Pages (Login/Register/403)
+   ========================================================= */
+.auth-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+}
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: 2rem;
+}
+
+.auth-card-lg {
+    max-width: 640px;
+}
+
+.btn-auth {
+    border-radius: 10px;
+    background: var(--navy-800);
+    border-color: var(--navy-800);
+    font-weight: 600;
+}
+
+.btn-auth:hover {
+    background: var(--navy-900);
+    border-color: var(--navy-900);
+}
+
+.logo-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #1c5bb0, #0a2f66);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+}
+
+.denied-icon {
+    font-size: 4.5rem;
+    color: var(--navy-700);
+}
+
+/* =========================================================
+   App Shell (Layout/Sidebar/Topbar)
+   ========================================================= */
+.app-shell {
+    background: var(--soft-bg);
+}
+
+.sidebar {
+    width: 270px;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg, #124a95 0%, #0b336d 100%);
+    color: #fff;
+    box-shadow: var(--shadow-soft);
+    z-index: 1030;
+}
+
+.sidebar-header {
+    padding: 1.1rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.sidebar-brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+}
+
+.sidebar-brand-title {
+    letter-spacing: 0.4px;
+}
+
+.sidebar-brand-subtitle {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.75rem;
+}
+
+.sidebar-nav {
+    padding: 1rem 0.75rem;
+    gap: 0.4rem;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 0.75rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.main-wrapper {
+    margin-left: 270px;
+    min-height: 100vh;
+}
+
+.topbar {
+    padding: 1rem 1.25rem;
+    background: linear-gradient(90deg, var(--navy-900), var(--navy-700));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.user-badge {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.user-badge i {
+    font-size: 1.7rem;
+}
+
+.main-content {
+    padding-bottom: 2rem;
+}
+
+/* =========================================================
+   Dashboard Components
+   ========================================================= */
+.stat-card,
+.content-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.stat-card {
+    padding: 1.2rem;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-card p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.content-card {
+    padding: 1.2rem;
+}
+
+.card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.85rem 0.55rem;
+}
+
+/* =========================================================
+   Responsive behavior
+   ========================================================= */
+@media (max-width: 991.98px) {
+    .app-shell .d-flex {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        position: relative;
+        top: unset;
+        left: unset;
+    }
+
+    .sidebar-header {
+        padding: 0.95rem 1rem;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .sidebar-nav::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+    }
+
+    .sidebar .nav-item {
+        flex: 0 0 auto;
+    }
+
+    .sidebar .nav-link {
+        justify-content: center;
+        padding: 0.65rem 0.8rem;
+        white-space: nowrap;
+    }
+
+    .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-badge {
+        align-self: flex-start;
+    }
+
+    .auth-card {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.15rem;
+    }
+
+    .stat-card h3 {
+        font-size: 1.65rem;
+    }
+}

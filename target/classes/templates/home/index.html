@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Kepegawaian</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- ChartJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg,#1f2a44,#3a4f7a);
+            display: flex;
+            padding: 20px;
+        }
+
+        .wrapper {
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background: rgba(0,0,0,0.3);
+            padding: 25px;
+            color: white;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 40px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            padding: 30px;
+            color: white;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search {
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            width: 300px;
+        }
+
+        /* CARDS */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        .blue { background: linear-gradient(45deg,#3a7bd5,#00d2ff); }
+        .purple { background: linear-gradient(45deg,#8e2de2,#4a00e0); }
+        .green { background: linear-gradient(45deg,#11998e,#38ef7d); }
+        .orange { background: linear-gradient(45deg,#ff9966,#ff5e62); }
+
+        .card h3 {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+
+        /* CONTENT GRID */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* NOTIF */
+        .notif{
+        position:relative;
+        cursor:pointer;
+        }
+        .notif-box{
+        position:absolute;
+        right:0;
+        top:40px;
+        width:300px;
+        background:white;
+        color:black;
+        padding:15px;
+        border-radius:15px;
+        display:none;
+        box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+        .notif-box.active{display:block;}
+
+
+        /* RESPONSIVE */
+        @media(max-width: 1024px){
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Sistem Kepegawaian</h2>
+        <div class="menu">
+            <a href="@{/home}">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="@{/pegawai}">
+                <i class="fas fa-users"></i>
+                <span>Pegawai</span>
+            </a>
+            <a th:action="@{/logout}" method="post">
+                <i class="fas fa-power-off"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="topbar">
+            <h1>Dashboard</h1>
+            <!--            <input type="text" class="search" placeholder="Search...">-->
+            <div>
+                <input type="text" class="search" placeholder="Search...">
+                <button onclick="toggleTheme()">🌙</button>
+                <span class="notif" onclick="toggleNotif()">🔔
+                <div id="notifBox" class="notif-box">
+                <b>Notifikasi</b>
+                <hr>
+                <p>Budi Santoso akan pensiun</p>
+                <p>Ani Siregar naik pangkat</p>
+                </div>
+                </span>
+            </div>
+        </div>
+
+        <!-- CARDS -->
+        <div class="card-grid">
+            <div class="card blue">
+                <h3 th:text="${totalSeluruhPegawai}">150</h3>
+                <p>Total Seluruh Pegawai</p>
+            </div>
+            <div class="card purple">
+                <h3 th:text="${pegawaiKanwil}">61</h3>
+                <p>Pegawai Kanwil</p>
+            </div>
+            <div class="card blue">
+                <h3 th:text="${totalSatker}">14</h3>
+                <p>Unit Pelaksana Teknis (UPT)</p>
+            </div>
+            <div class="card purple">
+                <h3 th:text="${totalPegawaiUPT}">782</h3>
+                <p>Pegawai Unit Pelaksana Teknis (UPT)</p>
+            </div>
+            <div class="card green">
+                <h3>18</h3>
+                <p>Kenaikan Berkala</p>
+            </div>
+            <div class="card orange">
+                <h3>20</h3>
+                <p>Akan Naik Pangkat</p>
+            </div>
+            <div class="card green">
+                <h3>18</h3>
+                <p>Akan Pensiun</p>
+            </div>
+            <div class="card orange">
+                <h3>20</h3>
+                <p>Satya Lencana</p>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content-grid">
+
+            <!-- LEFT -->
+            <div class="panel">
+                <h3>Notifikasi Terbaru</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Jenis</th>
+                        <th>Tanggal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Budi Santoso</td>
+                        <td>Pensiun</td>
+                        <td>15-12-2025</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="panel">
+                <h3>Pegawai per Golongan</h3>
+                <canvas id="donutChart"></canvas>
+                <br>
+                <canvas id="barChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function toggleTheme(){
+    document.body.classList.toggle("light");
+    localStorage.setItem("theme",
+    document.body.classList.contains("light")?"light":"dark");
+    }
+    window.onload=function(){
+    if(localStorage.getItem("theme")==="light"){
+    document.body.classList.add("light");
+    }
+    }
+
+    function toggleNotif(){
+    document.getElementById("notifBox").classList.toggle("active");
+    }
+
+    const ctx = document.getElementById('donutChart');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['I','II','III','IV'],
+            datasets: [{
+                data: [10,30,30,30],
+                backgroundColor: ['#00d2ff','#8e2de2','#ff9966','#38ef7d']
+            }]
+        }
+    });
+
+    const ctx2 = document.getElementById('barChart');
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['TU','Pembinaan','KLP'],
+            datasets: [{
+                label: 'Total',
+                data: [45,35,30],
+                backgroundColor: '#3a7bd5'
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>
