@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Data Pegawai</title>
@@ -26,16 +26,18 @@
 
     .sidebar h2{margin-bottom:40px;}
 
-    .sidebar a{
+    .sidebar a, .sidebar button{
         display:block;
         padding:12px;
         margin-bottom:10px;
         border-radius:12px;
         text-decoration:none;
         color:white;
+        background: transparent;
+        border:none;
     }
 
-    .sidebar a:hover{
+    .sidebar a:hover, .sidebar button:hover{
         background:rgba(255,255,255,0.2);
     }
 
@@ -83,23 +85,30 @@
   <div class="sidebar">
     <h2>Sistem Kepegawaian</h2>
     <div class="menu">
-      <a href="@{/home}">
+      <a th:href="@{/home}">
         <i class="fas fa-home"></i>
         <span>Dashboard</span>
       </a>
-      <a href="@{/pegawai}">
+      <a th:href="@{/pegawai}">
         <i class="fas fa-users"></i>
         <span>Pegawai</span>
       </a>
-      <a th:action="@{/logout}" method="post">
-        <i class="fas fa-power-off"></i>
-        <span>Logout</span>
-      </a>
+      <form th:action="@{/logout}" method="post">
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}" />
+        <button type="submit">
+            <i class="fas fa-power-off"></i>
+            <span>Logout</span>
+        </button>
+      </form>
     </div>
   </div>
 
   <div class="main">
     <h1>Data Pegawai</h1>
+
+    <a class="" th:href="@{/pegawai/upsert}">Tambah Data Pegawai</a>
 
     <div class="table-box">
       <input placeholder="Search...">
@@ -107,12 +116,21 @@
         <tr>
           <th>NIP</th>
           <th>Nama</th>
+          <th>Jabatan</th>
           <th>Unit Kerja</th>
+          <th>Aksi</th>
         </tr>
         <tr>
           <td>198765</td>
           <td>Budi Santoso</td>
+          <td>Pengadministrasi Umum</td>
           <td>TU</td>
+            <td>
+                <div class="">
+                    <a th:href="@{/pegawai/upsert(nip=*{nip})}" style="text-decoration:none;">Edit</a>
+                    <a class="fas fa-trash-alt" th:href="@{/pegawai/delete(nip=*{nip})}" style="text-decoration:none;">Hapus</a>
+                </div>
+            </td>
         </tr>
       </table>
     </div>

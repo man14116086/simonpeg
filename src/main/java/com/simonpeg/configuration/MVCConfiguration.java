@@ -15,9 +15,9 @@ public class MVCConfiguration implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry){
         registry.addViewController("/").setViewName("forward:/home/index");
         registry.addViewController("/account").setViewName("forward:/account/loginForm");
-        /*registry.addViewController("/home").setViewName("forward:/home/index");
-        registry.addViewController("/book").setViewName("forward:/book/index");
-        registry.addViewController("/customer").setViewName("forward:/customer/index");
+        registry.addViewController("/home").setViewName("forward:/home/index");
+        registry.addViewController("/pegawai").setViewName("forward:/pegawai/index");
+        /*registry.addViewController("/customer").setViewName("forward:/customer/index");
         registry.addViewController("/loan").setViewName("forward:/loan/index");*/
     }
 

@@ -7,4 +7,5 @@ public interface PegawaiService {
     public Long totalSeluruhPegawai();
     public Long totalPegawaiKanwil();
     public Long totalSatker();
+    public Long totalPegawaiUPT();
 }

@@ -22,4 +22,11 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 			SELECT COUNT(DISTINCT unit_kerja_id)
 			FROM Pegawai """)
 	public Long totalSatker();
+
+    @Query("""
+			SELECT COUNT(*)
+			FROM Pegawai
+			WHERE unit_kerja_id != 1
+			""")
+    public Long totalPegawaiUPT();
 }

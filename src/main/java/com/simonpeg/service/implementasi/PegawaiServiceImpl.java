@@ -25,4 +25,9 @@ public class PegawaiServiceImpl implements PegawaiService {
     public Long totalSatker() {
         return pegawaiRepository.totalSatker();
     }
+
+    @Override
+    public Long totalPegawaiUPT() {
+        return pegawaiRepository.totalPegawaiUPT();
+    }
 }

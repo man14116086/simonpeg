@@ -23,6 +23,7 @@ public class DashboardController {
         model.addAttribute("totalSeluruhPegawai", pegawaiService.totalSeluruhPegawai());
         model.addAttribute("totalPegawaiKanwil", pegawaiService.totalPegawaiKanwil());
         model.addAttribute("totalSatker", pegawaiService.totalSatker());
+        model.addAttribute("totalPegawaiUPT", pegawaiService.totalPegawaiUPT());
 //        model.addAttribute("akanPensiun", pegawaiService.totalPegawaiAkanPensiun());
 
         return "home/index";
