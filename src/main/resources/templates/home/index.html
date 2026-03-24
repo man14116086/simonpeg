@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,7 +123,6 @@
         @media(max-width:1024px){
             .cards{grid-template-columns:1fr;}
             .content-grid{grid-template-columns:1fr;}
-            .sidebar{display:none;}
         }
     </style>
 </head>
@@ -164,7 +163,7 @@
                 <p>Total Seluruh Pegawai</p>
             </div>
             <div class="card purple">
-                <h3 th:text="${totalPegawaiKanwil}">61</h3>
+                <h3 th:text="${pegawaiKanwil}">61</h3>
                 <p>Pegawai Kanwil</p>
             </div>
             <div class="card green">
@@ -211,14 +210,25 @@
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
+    const labels = [[${labels}]];
+    const values = [[${values}]];
+
+    function generateColors(count){
+        const colors = [];
+        for(let i=0; i<count; i++){
+            colors.push(`hsl(${i * 60}, 70%, 60%)`);
+        }
+        return colors;
+    }
+
      new Chart(document.getElementById("donut"),{
         type:'doughnut',
         data:{
-            labels:['I','II','III','IV'],
+            labels:labels,
             datasets:[{
-                data:[10,30,30,30],
-                backgroundColor:['#00d2ff','#8e2de2','#ff9966','#38ef7d']
+                data:values,
+                backgroundColor:generateColors(values.length)
             }]
         }
     });

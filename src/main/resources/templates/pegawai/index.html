@@ -73,6 +73,33 @@
         background:rgba(255,255,255,0.1);
     }
 
+    .aksi{
+    display: flex;
+    gap: 10px;      /* jarak antar icon */
+    align-items: center;
+    }
+
+    .pagination {
+    display: flex;
+    justify-content: space-between;
+    }
+    .pagination a {
+        color: #14acf8;
+        border: solid 1px #14acf8;
+        display: inline-block;
+        cursor: pointer;
+        width: 40px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        border-radius: 4px;
+        text-decoration:none;
+        margin-right:3px;
+    }
+    .pagination a:last-child{
+        margin-right:0;
+    }
+
     @media(max-width:1000px){
         .sidebar{display:none;}
     }
@@ -108,11 +135,12 @@
   <div class="main">
     <h1>Data Pegawai</h1>
 
-    <a class="" th:href="@{/pegawai/upsert}">Tambah Data Pegawai</a>
+    <a class="btn-add" th:href="@{/pegawai/upsert}">Tambah Data Pegawai</a>
 
     <div class="table-box">
       <input placeholder="Search...">
       <table>
+        <thead>
         <tr>
           <th>NIP</th>
           <th>Nama</th>
@@ -120,18 +148,36 @@
           <th>Unit Kerja</th>
           <th>Aksi</th>
         </tr>
-        <tr>
-          <td>198765</td>
-          <td>Budi Santoso</td>
-          <td>Pengadministrasi Umum</td>
-          <td>TU</td>
+        </thead>
+        <tbody>
+          <tr th:each="pegawai : ${listPegawai}" th:object="${pegawai}">
+            <td th:text="*{nip}"></td>
+            <td th:text="*{nama}"></td>
+            <td th:text="*{namaJabatan}"></td>
+            <td th:text="*{namaUnitKerja}"></td>
             <td>
-                <div class="">
-                    <a th:href="@{/pegawai/upsert(nip=*{nip})}" style="text-decoration:none;">Edit</a>
-                    <a class="fas fa-trash-alt" th:href="@{/pegawai/delete(nip=*{nip})}" style="text-decoration:none;">Hapus</a>
-                </div>
+              <div class="aksi">
+                <a class="fas fa-pen-to-square" th:href="@{/pegawai/upsert(nip=*{nip})}" style="text-decoration:none;color:white;" title="Edit"></a>
+                <a class="fas fa-trash" th:href="@{/pegawai/delete(nip=*{nip})}" style="text-decoration:none;color:white;" title="Hapus"></a>
+                <a class="fas fa-eye" th:href="@{/pegawai/detail(nip=*{nip})}" style="text-decoration:none;color:white;" title="Detail"></a>
+              </div>
             </td>
-        </tr>
+          </tr>
+        </tbody>
+        <tfoot>
+        <td colspan="5">
+          <div class="pagination">
+            <div th:attr="data-currentPage=${currentPage}" th:text="|page ${currentPage} of ${totalPage}|"></div>
+            <div th:if="${totalPage > 0}">
+              <a th:style="${currentPage == totalPage} ? 'pointer-events:none;'" th:href="@{/pegawai/index(page=${(currentPage - 1)}, nip=${nip}, nama=${nama}, namaJabatan=${namaJabatan})}" class="fa fa-arrow-left"> </a>
+              <a th:each="loop:${#numbers.sequence(1, totalPage)}"
+                 th:href="@{/pegawai/index(page=${loop}, nip=${nip}, nama=${nama}, namaJabatan=${namaJabatan})}"
+                 th:text="${loop}"></a>
+              <a th:style="${currentPage == totalPage} ? 'pointer-events:none;'" th:href="@{/pegawai/index(page=${(currentPage + 1)}, nip=${nip}, nama=${nama}, namaJabatan=${namaJabatan})}" class="fa fa-arrow-right"></a>
+            </div>
+          </div>
+        </td>
+        </tfoot>
       </table>
     </div>
   </div>
